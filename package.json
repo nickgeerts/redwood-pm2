@@ -15,5 +15,8 @@
   "engines": {
     "node": ">=12",
     "yarn": ">=1.15"
+  },
+  "scripts": {
+    "deploy": "pm2 deploy ecosystem.config.js production deploy"
   }
 }
