@@ -17,6 +17,7 @@
     "yarn": ">=1.15"
   },
   "scripts": {
-    "deploy": "pm2 deploy ecosystem.config.js production deploy"
+    "deploy:setup": "pm2 deploy production setup",
+    "deploy": "pm2 deploy production deploy"
   }
 }
