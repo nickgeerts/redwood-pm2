@@ -34,7 +34,7 @@ module.exports = {
       path,
       ssh_options: 'ForwardAgent=yes',
       'post-deploy':
-        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload --env production',
+        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
     },
   },
 }
