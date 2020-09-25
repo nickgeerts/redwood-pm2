@@ -9,6 +9,7 @@ module.exports = {
   apps: [
     {
       name,
+      'node-args': '-r dotenv/config',
       script: 'node_modules/@redwoodjs/api-server/dist/index.js',
       args: `-f api/dist/functions --port ${port}`,
       instances: 1,
@@ -33,7 +34,7 @@ module.exports = {
       path,
       ssh_options: 'ForwardAgent=yes',
       'post-deploy':
-        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
+        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload --env production',
     },
   },
 }
