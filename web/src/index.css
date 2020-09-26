@@ -1,0 +1,54 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 18px;
+  line-height: 36px;
+  color: #303030;
+}
+
+h1 {
+  font-size: 32px;
+  line-height: 48px;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.application-layout {
+  max-width: 640px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.td-name {
+  width: 60%;
+}
+
+.td-button {
+  width: 20%;
+  text-align: right;
+}
+
+.button {
+  width: 36px;
+  height: 36px;
+  border: solid 1px #808080;
+  background: white;
+  border-radius: 36px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.button.animate {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

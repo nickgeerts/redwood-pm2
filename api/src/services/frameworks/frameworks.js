@@ -1,7 +1,7 @@
 import { db } from 'src/lib/db'
 
 export function frameworks() {
-  return db.framework.findMany()
+  return db.framework.findMany({ orderBy: { createdAt: 'asc' } })
 }
 
 export function framework({ id }) {
