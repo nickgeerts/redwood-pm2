@@ -1,9 +1,9 @@
-const name = 'redwood-pm2'
-const repo = 'git@github.com:njjkgeerts/redwood-pm2.git'
-const path = `/home/deploy/${name}`
-const user = 'deploy'
-const host = 'nickgeerts.com'
-const port = 8911
+const name = 'redwood-pm2' // Name to use in PM2
+const repo = 'git@github.com:njjkgeerts/redwood-pm2.git' // Link to your repo
+const path = `/home/deploy/${name}` // Path on the server to deploy to
+const user = 'deploy' // Server user
+const host = 'example.com' // Server hostname
+const port = 8911 // Port to use locally on the server
 
 module.exports = {
   apps: [
