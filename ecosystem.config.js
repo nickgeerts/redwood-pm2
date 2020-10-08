@@ -2,7 +2,7 @@ const name = 'redwood-pm2' // Name to use in PM2
 const repo = 'git@github.com:njjkgeerts/redwood-pm2.git' // Link to your repo
 const path = `/home/deploy/${name}` // Path on the server to deploy to
 const user = 'deploy' // Server user
-const host = 'example.com' // Server hostname
+const host = 'nickgeerts.com' // Server hostname
 const port = 8911 // Port to use locally on the server
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
       path,
       ssh_options: 'ForwardAgent=yes',
       'post-deploy':
-        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
+        'yarn install --prod && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
     },
   },
 }
