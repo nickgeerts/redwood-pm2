@@ -4,7 +4,7 @@ const path = `/home/deploy/${name}` // Path on the server to deploy to
 const user = 'deploy' // Server user
 const host = 'nickgeerts.com' // Server hostname
 const port = 8911 // Port to use locally on the server
-const node = '/home/deploy/.nvm/versions/node/v14.13.1/bin/node' // Path to node version to use
+const prebuild = 'source ~/.nvm/nvm.sh' // Load nvm before building (used for node.js 14)
 
 module.exports = {
   apps: [
@@ -12,7 +12,7 @@ module.exports = {
       name,
       node_args: '-r dotenv/config',
       script: 'node_modules/@redwoodjs/api-server/dist/index.js',
-      args: `-f api/dist/functions --port ${port} --interpreter ${node}`,
+      args: `-f api/dist/functions --port ${port}`,
       instances: 1,
       autorestart: true,
       watch: false,
@@ -35,7 +35,7 @@ module.exports = {
       path,
       ssh_options: 'ForwardAgent=yes',
       'post-deploy':
-        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
+        `${prebuild} && yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
     },
   },
 }
