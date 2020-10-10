@@ -10,7 +10,7 @@ module.exports = {
     {
       name,
       node_args: '-r dotenv/config.js',
-      cwd: path,
+      cwd: `${path}/current`,
       script: 'node_modules/@redwoodjs/api-server/dist/index.js',
       args: `-f api/dist/functions --port ${port}`,
       instances: 1,
