@@ -4,7 +4,6 @@ const path = `/home/deploy/${name}` // Path on the server to deploy to
 const user = 'deploy' // Server user
 const host = 'nickgeerts.com' // Server hostname
 const port = 8911 // Port to use locally on the server
-const prebuild = 'source ~/.nvm/nvm.sh' // Load nvm before building (used for node.js 14)
 
 module.exports = {
   apps: [
@@ -35,7 +34,7 @@ module.exports = {
       path,
       ssh_options: 'ForwardAgent=yes',
       'post-deploy':
-        `${prebuild} && yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production`,
+        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
     },
   },
 }
