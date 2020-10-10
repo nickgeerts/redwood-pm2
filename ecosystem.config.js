@@ -13,6 +13,8 @@ module.exports = {
       cwd: `${path}/current/`,
       script: 'node_modules/@redwoodjs/api-server/dist/index.js',
       args: `-f api/dist/functions --port ${port}`,
+      instances: 1,
+      exec_mode: 'cluster',
       max_memory_restart: '1G',
       env: {
         NODE_ENV: 'development',
