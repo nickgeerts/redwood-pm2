@@ -93,6 +93,8 @@ Enjoy! 😁
 
 ## Add PM2 to your existing project
 
+If you want to add PM2 deployment to your existing project without cloning this project, you can follow these steps.
+
 First we need to add the Redwood.js API server and PM2 NPMs to the API workspace.
 
 ```
@@ -120,3 +122,5 @@ Optionally add some scripts to your top-level package.json.
   "deploy": "pm2 deploy production deploy"
 }
 ```
+
+This is the basic setup which should be compatible with the above settings. Take a look in `ecosystem.config.js` for more details.
