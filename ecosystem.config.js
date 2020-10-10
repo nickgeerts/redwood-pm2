@@ -1,7 +1,7 @@
 const name = 'redwood-pm2' // Name to use in PM2
 const repo = 'git@github.com:njjkgeerts/redwood-pm2.git' // Link to your repo
-const path = `/home/deploy/${name}` // Path on the server to deploy to
 const user = 'deploy' // Server user
+const path = `/home/${user}/${name}` // Path on the server to deploy to
 const host = 'nickgeerts.com' // Server hostname
 const port = 8911 // Port to use locally on the server
 
@@ -9,7 +9,7 @@ module.exports = {
   apps: [
     {
       name,
-      node_args: '-r dotenv/config.js',
+      node_args: '-r dotenv/config',
       cwd: `${path}/current`,
       script: 'node_modules/@redwoodjs/api-server/dist/index.js',
       args: `-f api/dist/functions --port ${port}`,

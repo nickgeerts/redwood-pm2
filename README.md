@@ -50,8 +50,8 @@ The ecosystem.config.js file is used for PM2 settings. The most important variab
 ```javascript
 const name = 'redwood-pm2' // Name to use in PM2
 const repo = 'git@github.com:njjkgeerts/redwood-pm2.git' // Link to your repo
-const path = `/home/deploy/${name}` // Path on the server to deploy to
 const user = 'deploy' // Server user
+const path = `/home/${user}/${name}` // Path on the server to deploy to
 const host = 'example.com' // Server hostname
 const port = 8911 // Port to use locally on the server
 ```
@@ -90,3 +90,33 @@ yarn deploy
 ```
 
 Enjoy! 😁
+
+## Add PM2 to your existing project
+
+First we need to add the Redwood.js API server and PM2 NPMs to the API workspace.
+
+```
+yarn workspace api add @redwoodjs/api-server
+yarn workspace api add -D pm2
+```
+
+Create a PM2 config file.
+
+```
+yarn pm2 init
+```
+
+Edit redwood.toml to change the API endpoint:
+
+```
+apiProxyPath = "/api"
+```
+
+Optionally add some scripts to your top-level package.json.
+
+```
+"scripts": {
+  "deploy:setup": "pm2 deploy production setup",
+  "deploy": "pm2 deploy production deploy"
+}
+```
