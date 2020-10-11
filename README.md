@@ -4,6 +4,8 @@ This is an example of serverfull hosting of a Redwood.js app with PM2 and Nginx.
 
 ## Requirements
 
+You should have some basic knowledge setting up the following tools.
+
 - Linux server
 - Nginx
 - Postgres
@@ -45,7 +47,7 @@ server {
 
 ### PM2
 
-The ecosystem.config.js file is used for PM2 settings. The most important variables are at the top. Note that the port is only used locally on the server and should match the port in the Nginx config.
+The pm2.config.js file is used for PM2 settings. The most important variables are at the top. Note that the port is only used locally on the server and should match the port in the Nginx config.
 
 ```javascript
 const name = 'redwood-pm2' // Name to use in PM2
@@ -54,6 +56,7 @@ const user = 'deploy' // Server user
 const path = `/home/${user}/${name}` // Path on the server to deploy to
 const host = 'example.com' // Server hostname
 const port = 8911 // Port to use locally on the server
+const build = 'yarn install && yarn rw build && yarn rw db up && yarn rw db seed' // Build commands
 ```
 
 ## Deploying
@@ -91,6 +94,13 @@ yarn deploy
 
 Enjoy! 😁
 
+## Caveats
+
+Here are some caveats I have encountered:
+
+- It seems to only work in Node.js version 14, version 12 gave me crashes
+- It only runs in fork mode in PM2, not cluster mode
+
 ## Add PM2 to your existing project
 
 If you want to add PM2 deployment to your existing project without cloning this project, you can follow these steps.
@@ -102,10 +112,11 @@ yarn workspace api add @redwoodjs/api-server
 yarn workspace api add -D pm2
 ```
 
-Create a PM2 config file.
+Create a PM2 ecosystem configuration file. I always rename ecosystem.config.js to pm2.config.js for better clarity.
 
 ```
 yarn pm2 init
+mv ecosystem.config.js pm2.config.js
 ```
 
 Edit redwood.toml to change the API endpoint:
@@ -118,9 +129,9 @@ Optionally add some scripts to your top-level package.json.
 
 ```
 "scripts": {
-  "deploy:setup": "pm2 deploy production setup",
-  "deploy": "pm2 deploy production deploy"
+  "deploy:setup": "pm2 deploy pm2.config.js production setup",
+  "deploy": "pm2 deploy pm2.config.js production deploy"
 }
 ```
 
-This is the basic setup which should be compatible with the above settings. Take a look in `ecosystem.config.js` for more details.
+This is the basic setup which should be compatible with the rest of my guide. Take a look in `pm2.config.js` for more details.

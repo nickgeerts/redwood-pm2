@@ -4,6 +4,7 @@ const user = 'deploy' // Server user
 const path = `/home/${user}/${name}` // Path on the server to deploy to
 const host = 'nickgeerts.com' // Server hostname
 const port = 8911 // Port to use locally on the server
+const build = 'yarn install && yarn rw build && yarn rw db up && yarn rw db seed' // Build commands
 
 module.exports = {
   apps: [
@@ -32,7 +33,7 @@ module.exports = {
       path,
       ssh_options: 'ForwardAgent=yes',
       'post-deploy':
-        'yarn install && yarn rw build && yarn rw db up && yarn rw db seed && pm2 reload ecosystem.config.js --env production',
+        `${build} && pm2 reload pm2.config.js --env production && pm2 save`,
     },
   },
 }
