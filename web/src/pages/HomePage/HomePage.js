@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, routes } from '@redwoodjs/router'
 import { useQuery, useMutation } from '@redwoodjs/web'
-import ApplicationLayout from 'src/layouts/ApplicationLayout'
+import ApplicationLayout from 'src/layouts/ApplicationLayout/ApplicationLayout'
 
 export const FRAMEWORKS_QUERY = gql`
   query FrameworksQuery {
