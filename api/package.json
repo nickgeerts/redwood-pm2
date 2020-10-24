@@ -6,7 +6,5 @@
     "@redwoodjs/api": "^0.20.0",
     "@redwoodjs/api-server": "^0.20.0"
   },
-  "devDependencies": {
-    "pm2": "^4.4.1"
-  }
+  "devDependencies": {}
 }
