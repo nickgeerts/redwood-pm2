@@ -1,31 +1,66 @@
-# Redwood.js serverfull hosting with PM2
+# Self-hosting Redwood: Serverfull
 
-This is an example of serverfull hosting of a Redwood.js app with PM2 and Nginx.
+Do you prefer to host a Redwood app on your own server, the traditional serverfull way, instead of all this serverless magic? Well, you can! In this recipe we configure a Redwood app with PM2 and Nginx on a Linux server.
+
+## Example
+
+This repo is a code example but alternatively you can follow the steps in this README.
 
 ## Requirements
 
-You should have some basic knowledge setting up the following tools.
+You should have some basic knowledge of the following tools.
 
-- Linux server
-- Nginx
-- Postgres
-- PM2
+- Linux
+- [Nginx](https://nginx.org/en/docs/)
+- [Postgres](https://www.postgresql.org/docs/)
+- [PM2](https://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/)
 - Node
 - Yarn
 
 ## Configuration
 
+### Project
+
+Add Redwood's API server (in the API workspace) and PM2 (in the root) to your project.
+
+```termninal
+yarn workspace api add @redwoodjs/api-server
+yarn add -D pm2
+```
+
+Create a PM2 ecosystem configuration file. For clarity, it's recommended to rename `ecosystem.config.js` to something like `pm2.config.js`.
+
+```terminal
+yarn pm2 init
+mv ecosystem.config.js pm2.config.js
+```
+
+Edit redwood.toml to change the API endpoint:
+
+```toml
+apiProxyPath = "/api"
+```
+
+Optionally, add some scripts to your top-level package.json.
+
+```json
+"scripts": {
+  "deploy:setup": "pm2 deploy pm2.config.js production setup",
+  "deploy": "pm2 deploy pm2.config.js production deploy"
+}
+```
+
 ### Linux server
 
-Your server should have a user for deploying the app with. It should be configured with a SSH key pair so you can easily SSH into it from your development environment. In this example this user is named `deploy`.
+Your server should have a user for deployment, which should be configured with an SSH key pair providing access to your production environment. In this example, the user is named `deploy`.
 
 ### Nginx
 
 Your Nginx configuration file for the app should look something like this. Typically, this file would be stored at `/etc/nginx/sites-available/redwood-pm2` and is symbolically linked to `/etc/nginx/sites-enabled/redwood-pm2`.
 
-Please note that the trailing slash in the proxy_pass value is essental to correctly map the API functions.
+Please note that the trailing slash in the proxy_pass value is essential to correctly map the API functions.
 
-```
+```nginx
 server {
   server_name redwood-pm2.example.com;
   listen 80;
@@ -57,28 +92,60 @@ const path = `/home/${user}/${name}` // Path on the server to deploy to
 const host = 'example.com' // Server hostname
 const port = 8911 // Port to use locally on the server
 const build = 'yarn install && yarn rw build && yarn rw db up && yarn rw db seed' // Build commands
+
+module.exports = {
+  apps: [
+    {
+      name,
+      node_args: '-r dotenv/config',
+      cwd: `${path}/current/`,
+      script: 'node_modules/@redwoodjs/api-server/dist/index.js',
+      args: `-f api/dist/functions --port ${port}`,
+      env: {
+        NODE_ENV: 'development',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+    },
+  ],
+
+  deploy: {
+    production: {
+      user,
+      host,
+      ref: 'origin/master',
+      repo,
+      path,
+      ssh_options: 'ForwardAgent=yes',
+      'post-deploy': `${build} && pm2 reload pm2.config.js --env production && pm2 save`,
+    },
+  },
+}
 ```
+
+> Caveat: the API seems to only work in fork mode in PM2, not [cluster mode](https://pm2.keymetrics.io/docs/usage/cluster-mode/)
 
 ## Deploying
 
 ### Preparation
 
-First, we need to create the directories for PM2.
+First, we need to create the PM2 directories.
 
-```
+```terminal
 yarn install
 yarn deploy:setup
 ```
 
-Your directories at the server are now set. However, your `.env` settings are not yet configured. SSH into your server and create an `.env` file in the `current` subdirectory of the deploy directory.
+Your server directories are now set. However, the `.env` settings are not yet configured. SSH into your server and create an `.env` file in the `current` subdirectory of the deploy directory.
 
-```
+```terminal
 vim /home/deploy/redwood-pm2/current/.env
 ```
 
-In the example we only need an DATABASE_URL variable.
+For example, add a DATABASE_URL variable.
 
-```
+```env
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/redwood-pm2
 ```
 
@@ -88,50 +155,8 @@ Now we can finally deploy the app.
 
 Just run the following. It should update the code, take care of database migrations and restart the app in PM2.
 
-```
+```terminal
 yarn deploy
 ```
 
 Enjoy! 😁
-
-## Caveats
-
-Here are some caveats I have encountered:
-
-- It seems to only work in Node.js version 14, version 12 gave me crashes
-- It only runs in fork mode in PM2, not cluster mode
-
-## Add PM2 to your existing project
-
-If you want to add PM2 deployment to your existing project without cloning this project, you can follow these steps.
-
-First we need to add the Redwood.js API server and PM2 NPMs to the API workspace.
-
-```
-yarn workspace api add @redwoodjs/api-server
-yarn workspace api add -D pm2
-```
-
-Create a PM2 ecosystem configuration file. I always rename ecosystem.config.js to pm2.config.js for better clarity.
-
-```
-yarn pm2 init
-mv ecosystem.config.js pm2.config.js
-```
-
-Edit redwood.toml to change the API endpoint:
-
-```
-apiProxyPath = "/api"
-```
-
-Optionally add some scripts to your top-level package.json.
-
-```
-"scripts": {
-  "deploy:setup": "pm2 deploy pm2.config.js production setup",
-  "deploy": "pm2 deploy pm2.config.js production deploy"
-}
-```
-
-This is the basic setup which should be compatible with the rest of my guide. Take a look in `pm2.config.js` for more details.
