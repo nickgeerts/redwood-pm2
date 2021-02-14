@@ -5,13 +5,13 @@ export function frameworks() {
 }
 
 export function framework({ id }) {
-  return db.framework.findOne({
+  return db.framework.findUnique({
     where: { id },
   })
 }
 
 export async function clapFramework({ id }) {
-  let framework = await db.framework.findOne({
+  let framework = await db.framework.findUnique({
     where: { id },
   })
   if (framework) {

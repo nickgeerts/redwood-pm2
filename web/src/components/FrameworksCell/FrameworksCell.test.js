@@ -1,4 +1,4 @@
-import { render, screen } from '@redwoodjs/testing'
+import { render } from '@redwoodjs/testing'
 import { Loading, Empty, Failure, Success } from './FrameworksCell'
 import { standard } from './FrameworksCell.mock'
 
