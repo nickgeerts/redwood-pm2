@@ -160,3 +160,13 @@ yarn deploy
 ```
 
 Enjoy! 😁
+
+### Startup script
+
+To persist the PM2 service during server restarts, `SSH into your server` and run:
+
+```
+pm2 startup
+```
+
+Follow the instructions as shown.
