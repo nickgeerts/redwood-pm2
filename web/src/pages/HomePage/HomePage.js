@@ -1,5 +1,5 @@
 import ApplicationLayout from 'src/layouts/ApplicationLayout/ApplicationLayout'
-import FrameworksCell from 'src/components/FrameworksCell'
+import FrameworksCell from 'src/components/FrameworksCell/FrameworksCell'
 
 const HomePage = () => {
   return (
