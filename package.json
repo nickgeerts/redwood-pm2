@@ -7,7 +7,7 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "0.31.2",
+    "@redwoodjs/core": "0.32.2",
     "pm2": "^4.4.1"
   },
   "eslintConfig": {
@@ -16,10 +16,6 @@
   "engines": {
     "node": ">=14",
     "yarn": ">=1.15"
-  },
-  "resolutions": {
-    "react-dom": "17.0.1",
-    "react": "17.0.1"
   },
   "scripts": {
     "deploy:setup": "pm2 deploy pm2.config.js production setup",
