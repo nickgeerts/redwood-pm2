@@ -22,3 +22,7 @@ export async function clapFramework({ id }) {
   }
   return framework
 }
+
+export function beforeResolver(rules) {
+  rules.skip()
+}
