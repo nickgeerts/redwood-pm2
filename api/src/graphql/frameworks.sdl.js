@@ -7,11 +7,11 @@ export const schema = gql`
   }
 
   type Query {
-    frameworks: [Framework!]!
-    framework(id: Int!): Framework
+    frameworks: [Framework!]! @skipAuth
+    framework(id: Int!): Framework @skipAuth
   }
 
   type Mutation {
-    clapFramework(id: Int!): Framework
+    clapFramework(id: Int!): Framework @skipAuth
   }
 `

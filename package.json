@@ -7,7 +7,7 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "^0.36.3",
+    "@redwoodjs/core": "^0.37.5",
     "pm2": "^4.4.1"
   },
   "eslintConfig": {
